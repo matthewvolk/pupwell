@@ -1,6 +1,48 @@
-{{#if bulk_discount_rates.length}}
-    {{#if product}}<dt class="productView-info-name">{{lang 'products.bulk_pricing.title'}}</dt>{{/if}}
-    <dd class="productView-info-value">
+{{#if bulk_discount_rates.length}} {{#if product}}
+<dt class="productView-info-name">{{lang 'products.bulk_pricing.title'}}</dt>
+{{/if}}
+
+<!-- BEGIN LIBERTY COIN TESTING -->
+<table style="border: 1px solid black; border-collapse: collapse">
+  <tr>
+    <th style="border: 1px solid black; border-collapse: collapse">Quantity</th>
+    <th style="border: 1px solid black; border-collapse: collapse">
+      Check/Wire
+    </th>
+    <th style="border: 1px solid black; border-collapse: collapse">
+      CC/PayPal
+    </th>
+  </tr>
+  {{#each bulk_discount_rates}} {{#if discount.value "===" 0}}
+  <td style="border: 1px solid black; border-collapse: collapse">
+    1 - {{max}}
+  </td>
+  <td style="border: 1px solid black; border-collapse: collapse">
+    {{money (subtract ../../product.price.without_tax.value (multiply (divide
+    ../../product.price.without_tax.value 100) 2)) 2 ',' '.'}}
+  </td>
+  <td style="border: 1px solid black; border-collapse: collapse">
+    {{money ../../product.price.without_tax.value 2 ',' '.'}}
+  </td>
+  {{else}}
+  <tr>
+    <td style="border: 1px solid black; border-collapse: collapse">
+      {{min}}{{#if max "===" 0}}+{{else}} - {{max}}{{/if}}
+    </td>
+    <td style="border: 1px solid black; border-collapse: collapse">
+      {{money (subtract (subtract ../../product.price.without_tax.value
+      discount.value) (multiply (divide (subtract
+      ../../product.price.without_tax.value discount.value) 100) 2)) 2 ',' '.'}}
+    </td>
+    <td style="border: 1px solid black; border-collapse: collapse">
+      {{money (subtract ../../product.price.without_tax.value discount.value) 2
+      ',' '.'}}
+    </td>
+  </tr>
+  {{/if}} {{/each}}
+</table>
+
+<!-- <dd class="productView-info-value">
         <a href="{{product.url}}#bulk_pricing"
            {{#unless is_ajax }}data-reveal-id="modal-bulk-pricing"{{/unless}}>
             {{lang 'products.bulk_pricing.view'}}
@@ -9,7 +51,7 @@
     <div id="modal-bulk-pricing" class="modal modal--small" data-reveal>
         <div class="modal-header">
             <h2 class="modal-header-title">{{lang 'products.bulk_pricing.modal_title'}}</h2>
-            <a href="#" class="modal-close" aria-label="Close"><span aria-hidden="true">&#215;</span></a>
+            {{> components/common/modal/modal-close-btn}}
         </div>
         <div class="modal-body">
             <p>{{lang 'products.bulk_pricing.instructions'}}</p>
@@ -28,5 +70,7 @@
                 {{/each}}
             </ul>
         </div>
-    </div>
+    </div> -->
+
+<!-- END LIBERTY COIN TESTING -->
 {{/if}}
